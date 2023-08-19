@@ -4,7 +4,7 @@ APP_NAME=ansibledind
 DOCKER_REPO=maissacrement
 
 env ?= .env
-include $(env)
+-include $(env)
 export $(shell sed 's/=.*//' $(env))
 
 version:
