@@ -1,0 +1,15 @@
+version: '3.9'
+
+services:
+  ansible:
+    image: docker.io/maissacrement/ansibledind
+    container_name: ansibledind2
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+    env_file:
+      - .env
+  # environment:
+  #   - subscription_id=
+  #   - client_id=
+  #   - secret=
+  #   - tenant=
