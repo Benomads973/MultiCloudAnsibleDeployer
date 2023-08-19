@@ -21,11 +21,11 @@ timetosay () {
 }
 
 main () {
-    watcher_path=/var/logs/watcher
-    substfile /root/.azure/credentials >> $watcher_path
-    timetosay printer &
-    tail -f $watcher_path
-    
+    #watcher_path=/var/logs/watcher
+    substfile /root/.azure/credentials # >> $watcher_path
+    #timetosay printer &
+    #tail -f $watcher_path
+    /bin/sh
 }
 
 main

@@ -1,5 +1,24 @@
 ## DEPLOYING A KUBERNETES PROJECT ON JENKINS VIA ANSIBLE TO AZURE (AKS)
 
+## IMAGE
+
+```yaml
+image: docker.io/maissacrement/ansibledind
+```
+[download](https://hub.docker.com/repository/docker/maissacrement/ansibledind/general)
+
+## HOW TO USE
+
+Modify kubernetes and ansible file:
+
+`make dev` or `docker run -it --rm -v /var/run/docker.sock:/var/run/docker.sock -e 'subscription_id=$subscription_id,client_id=$client_id,secret=$secret,tenant=$tenant' ansible`
+
+## DOCKER API
+
+[install](https://docs.docker.com/engine/install/)
+
+[post_install](https://docs.docker.com/engine/install/linux-postinstall)
+
 ## HOW TO CONFIGURE
 
 ### Complete environment file (from .env.example to .env)
@@ -35,7 +54,7 @@ Click on "Certificats & secrets" and create a new secret with "New client secret
 secret: <'value || valeur' field> # Get secret value
 ```
 
-### File to update
+### Set kubernetes and ansible files
 
 ```bash
 deploy.yml: ansible File
