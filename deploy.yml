@@ -10,6 +10,14 @@
 
   - debug: 
       var: echo.stdout_lines
+
+  - name: Create a resource group
+    azure_rm_resourcegroup:
+      name: myResourceGroupTest
+      location: eastus
+      tags:
+          testing: testing
+          delete: never
   
   - name: Create an azure container registry
     azure_rm_containerregistry:

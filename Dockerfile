@@ -26,4 +26,5 @@ COPY ./azure_credentials.ini /root/.azure/credentials
 COPY ./deploy.yml /home/deploy.yml
 COPY ./kubeapplication.yml /home/kubeapplication.yml
 
+USER root
 ENTRYPOINT ["/home/init.sh"]

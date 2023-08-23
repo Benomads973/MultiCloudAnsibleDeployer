@@ -25,7 +25,7 @@ main () {
     substfile /root/.azure/credentials # >> $watcher_path
     #timetosay printer &
     #tail -f $watcher_path
-    /bin/sh
 }
 
 main
+/bin/sh -c "$@"

@@ -11,7 +11,7 @@ image: docker.io/maissacrement/ansibledind
 
 Modify kubernetes and ansible file:
 
-`make dev` or `docker run -it --rm -v /var/run/docker.sock:/var/run/docker.sock -e 'subscription_id=$subscription_id,client_id=$client_id,secret=$secret,tenant=$tenant' ansible`
+`make dev` or `docker run -it --rm -v /var/run/docker.sock:/var/run/docker.sock -e 'subscription_id=$subscription_id,client_id=$client_id,secret=$secret,tenant=$tenant' docker.io/maissacrement/ansibledind`
 
 ## DOCKER API
 
