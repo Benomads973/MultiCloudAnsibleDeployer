@@ -3,13 +3,6 @@
   connection: local
 
   tasks:
-  - name: echo
-    shell: |
-      cat /root/.azure/credentials
-    register: echo
-
-  - debug: 
-      var: echo.stdout_lines
 
   - name: Create a resource group
     azure_rm_resourcegroup:
