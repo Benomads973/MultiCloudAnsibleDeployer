@@ -1,0 +1,33 @@
+- name: Azure configuration
+  hosts: 127.0.0.1
+  connection: local
+
+  tasks:
+
+  - name: Login to azure
+    shell: az login -u "{{lookup('env', 'email')}}" -p "{{lookup('env', 'passowrd')}}"
+    register: ps
+
+  - debug: 
+      var: ps.stdout_lines
+
+  - name: Create ressources groupe
+    shell: |
+      az group create -l westus -n MyResourceGroupTest
+
+  - name: Create aks cluster
+    shell: |
+      az aks create --resource-group myResourceGroupTest --name myAutoApp --node-count 2 --generate-ssh-keys --attach-acr autoapp 2>/dev/null &  
+
+  - name: Install and Link azure-cli to kubectl
+    shell: |
+      az aks install-cli
+      az aks get-credentials --resource-group myResourceGroupTest --name myAutoApp
+
+  - name: Deploy Kubernetes spec
+    shell: |
+      kubectl apply -f /home/kubeapplication.yml
+    register: kube
+
+  - debug: 
+      var: kube.stdout_lines

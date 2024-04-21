@@ -19,13 +19,18 @@ Modify kubernetes and ansible file:
 
 [post_install](https://docs.docker.com/engine/install/linux-postinstall)
 
-## HOW TO CONFIGURE
+## HOW TO CONFIGURE: Complete environment file (from .env.example to .env)
 
-### Complete environment file (from .env.example to .env)
+There are 2 connection modes. The student mode is done via email password.
 
-Find client identity on Portal azure to provide docker environment variable
+```bash
+email: <azure login email> 
+password: <azure login password>
+```
 
-Env variable require 4 credential field: subscription_id, tenant, client_id, secret. That you can find by completing the following steps
+And the subscription mode by application. Find client identity on Azure Portal to provide a Docker environment variable.
+
+Environment variables require 4 credential fields: subscription_id, tenant, client_id, secret. That you can find by completing the following steps:
 
 Etape 1:
 
@@ -65,5 +70,5 @@ kubeapplication.yml: kubernetes File
 
 ```bash
 make build: to build this image
-make dev: to run a container
+make dev: to run and attach to the new container
 ```

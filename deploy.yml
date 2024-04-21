@@ -41,7 +41,7 @@
     shell: |
       az aks create --resource-group myResourceGroupTest --name myAutoApp --node-count 2 --generate-ssh-keys --attach-acr autoapp 2>/dev/null &  
 
-  - name: Apply credentials with azure-cli to kubectl
+  - name: Install and Link azure-cli to kubectl
     shell: |
       az aks install-cli
       az aks get-credentials --resource-group myResourceGroupTest --name myAutoApp

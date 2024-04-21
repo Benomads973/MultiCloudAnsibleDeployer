@@ -28,4 +28,4 @@ main () {
 }
 
 main
-/bin/sh -c "$@"
+/bin/sh
