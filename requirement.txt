@@ -1,3 +1,8 @@
+google-auth
+google-auth-httplib2
+google-auth-oauthlib
+google-cloud
+google-auth
 adal==1.2.7
 ansible==8.2.0
 ansible-core>=2.15.2
@@ -53,8 +58,8 @@ azure-mgmt-storage==19.0.0
 azure-mgmt-trafficmanager==1.0.0b1
 azure-mgmt-web==6.1.0
 azure-nspkg==2.0.0
-azure-storage-blob==12.11.0
-azure-storage-common==2.1.0
+azure-storage-blob>=12.11.0
+azure-storage-common>=2.1.0
 bcrypt==3.1.7
 certifi==2019.11.28
 cffi==1.15.1

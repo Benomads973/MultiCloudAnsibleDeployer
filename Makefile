@@ -17,7 +17,9 @@ build:
 	@docker build -t $(APP_NAME) .
 
 dev:
-	@docker run -it --rm -v /var/run/docker.sock:/var/run/docker.sock --name $(APP_NAME) --env-file=.env $(APP_NAME)
+	@docker run -it --rm \
+		-v "${PWD}/deploy_cli.yml:/home/deploy_cli.yml" \
+		-v /var/run/docker.sock:/var/run/docker.sock --name $(APP_NAME) --env-file=.env $(APP_NAME)
 
 tag-latest:
 	@echo 'create tag latest'
