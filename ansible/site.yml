@@ -1,0 +1,21 @@
+- hosts: here
+  gather_facts: yes
+
+  vars:
+    ansible_python_interpreter: /opt/venv/bin/python3
+
+  pre_tasks:
+    - name: Login to azure
+      shell: az login --service-principal \
+        --username "{{lookup('env', 'client_id')}}" \
+        --password "{{lookup('env', 'secret')}}" \
+        --tenant "{{lookup('env', 'tenant')}}"
+    
+    - name: Create resource group
+      azure_rm_resourcegroup:
+        name: "{{ azure_rg }}"
+        location: "{{ region }}"
+
+  roles:
+    - vm-creation
+    - aks-creation

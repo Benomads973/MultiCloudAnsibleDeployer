@@ -59,18 +59,41 @@ Click on "Certificats & secrets" and create a new secret with "New client secret
 secret: <'value || valeur' field> # Get secret value
 ```
 
+## How to use
+
+### Make (stable vs V1)
+
+Deux images aux choix pour vos tests "stable" ou "v1"
+
+```bash
+# Docker version stable
+make build-stable # construire l'image (Nom de l'image local /ansibledind-stable)
+make dev-stable # lancer le demon de l'image docker en background et s'y attacher sous bash
+```
+
+or
+
+```bash
+# Docker v1
+make build # construire l'image (Nom de l'image local /ansibledind)
+make dev # lancer le demon de l'image docker en background et s'y attacher sous bash
+```
+
+### Lancement manuel
+
+```bash
+# depuis le repertoire courrant
+docker build -t ansible-v1 . -f ./docker/V1/Dockerfile
+docker run -d -v "./ansible:/home/ansible" -v /var/run/docker.sock:/var/run/docker.sock --name ansible-v1 --env-file=$(env) ansible-v1
+docker exec -it /ansible-v1 /bin/bash
+```
+
+
 ### Set kubernetes and ansible files
 
 ```bash
 deploy.yml: ansible File
 kubeapplication.yml: kubernetes File
-```
-
-## HOW TO DEV
-
-```bash
-make build: to build this image
-make dev: to run and attach to the new container
 ```
 
 ## ISSUE

@@ -1,0 +1,14 @@
+# Read and apply network.yml
+- name: Create azure network
+  include_tasks: network.yml
+
+- name: Create VM with defaults
+  shell: |
+    az vm create \
+      --resource-group {{ azure_rg }} \
+      --name "{{ myvmname }}" \
+      --image "{{ osimage }}" \
+      --public-ip-sku Standard \
+      --admin-username "{{ vmusername }}" \
+      --admin-password "{{ vmpassword }}" \
+      --vnet-name "{{ virtual_net_name }}"

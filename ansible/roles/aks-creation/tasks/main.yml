@@ -1,0 +1,15 @@
+- name: Create aks cluster
+  shell: |
+    az aks create --resource-group {{ azure_rg }} --name {{ aks_app_name }} --node-count 2 --generate-ssh-keys --attach-acr {{ azure_docker_registry }} 2>/dev/null &  
+
+- name: Install and Link azure-cli to kubectl
+  shell: |
+    az aks get-credentials --resource-group {{ azure_rg }} --name {{ aks_app_name }}
+
+- name: Deploy Kubernetes spec
+  shell: |
+    kubectl apply -f roles/aks-creation/templates/kubeapplication.yml
+  register: kube
+
+- debug: 
+    var: kube.stdout_lines

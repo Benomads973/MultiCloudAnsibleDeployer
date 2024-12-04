@@ -1,0 +1,15 @@
+network_cidr: 10.81.0.0/16 # DEFAULT $IP_RANGE has set to 16
+network_block_size: 26 # BLOCKSIZE = 32 bits - $IP_RANGE
+azure_rg: ansible-rg-2
+aks_app_name: myAutoApp
+azure_docker_registry: autoapp
+region: australiacentral
+myvmname: testvm12
+osimage: Win2022Datacenter
+vmusername: azureuser
+vmpassword: defaultpasscanbeoverride
+virtual_net_cidr: 10.1.0.0/16
+vnet_name: vNet
+virtual_subnet_cidr: 10.1.1.0/24 # Inside virtual network
+vsubnet_name: webSubnet
+physical_interface_name: webNic
