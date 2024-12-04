@@ -29,10 +29,9 @@ ENV VENV_PATH /opt/venv
 RUN python -m venv ${VENV_PATH} && \
     . ${VENV_PATH}/bin/activate && \
     pip install --no-cache-dir -r /home/requirement.txt && \
-    # Remove unnecessary Python packages after use
     pip uninstall azure-storage azure-storage-blob -y && \
     pip install azure-storage-blob && \
-    pip install "azure-cli>=2.51.0" "azure-mgmt-recoveryservicesbackup==3.0.0" && \
+    pip install "azure-mgmt-recoveryservicesbackup==3.0.0" && \
     # Clean up pip cache to reduce image size
     rm -rf /root/.cache/pip
 

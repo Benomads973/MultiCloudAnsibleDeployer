@@ -59,7 +59,7 @@ Click on "Certificats & secrets" and create a new secret with "New client secret
 secret: <'value || valeur' field> # Get secret value
 ```
 
-## How to use
+## How to use (Dev context)
 
 ### Make (stable vs V1)
 
@@ -85,15 +85,16 @@ make dev # lancer le demon de l'image docker en background et s'y attacher sous 
 # depuis le repertoire courrant
 docker build -t ansible-v1 . -f ./docker/V1/Dockerfile
 docker run -d -v "./ansible:/home/ansible" -v /var/run/docker.sock:/var/run/docker.sock --name ansible-v1 --env-file=$(env) ansible-v1
-docker exec -it /ansible-v1 /bin/bash
+docker exec -it /ansible-v1 /bin/bash -c "ansible-playbook -i ./inventory/staging/hosts.yml site.yml"
 ```
 
-
-### Set kubernetes and ansible files
+## How to use CI
 
 ```bash
-deploy.yml: ansible File
-kubeapplication.yml: kubernetes File
+# depuis le repertoire courrant
+docker build -t ansible-v1 . -f ./docker/V1/Dockerfile
+docker run -d -v "./ansible:/home/ansible" -v /var/run/docker.sock:/var/run/docker.sock --name ansible-v1 --env-file=$(env) ansible-v1
+docker exec -it /ansible-v1 /bin/bash -c "ansible-playbook -i ./inventory/staging/hosts.yml site.yml"
 ```
 
 ## ISSUE
