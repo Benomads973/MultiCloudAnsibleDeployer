@@ -36,7 +36,7 @@ RUN python -m venv ${VENV_PATH} && \
     rm -rf /root/.cache/pip
 
 # Install Ansible GCP modules
-RUN ansible-galaxy collection install google.cloud && \
+RUN ${VENV_PATH}/bin/python3 -m ansible galaxy collection install google.cloud && \
     # Clean up ansible-galaxy cache
     rm -rf /root/.ansible/collections
 
@@ -52,12 +52,7 @@ RUN chmod +x /home/init.sh && \
     mkdir -p /var/logs && \
     touch /var/logs/watcher
 
-# Set up working directory and environment
-ENV WORKDIR "workdir"
-RUN mkdir -p ${WORKDIR}/ansible && \
-    mkdir -p ${WORKDIR}/manifest
-
-WORKDIR ${WORKDIR}
+WORKDIR /home/ansible
 
 # Add environment variables and commands
 RUN echo "export PATH=${PATH}:/usr/local/bin:${VENV_PATH}/bin" >> ~/.bashrc && \

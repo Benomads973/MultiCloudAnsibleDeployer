@@ -10,6 +10,6 @@ vmusername: azureuser
 vmpassword: defaultpasscanbeoverride
 virtual_net_cidr: 10.1.0.0/16
 vnet_name: vNet
-virtual_subnet_cidr: 10.1.1.0/24 # Inside virtual network
+virtual_subnet_cidr: 10.1.1.0/24 # Inside virtual network 254 services max
 vsubnet_name: webSubnet
 physical_interface_name: webNic
