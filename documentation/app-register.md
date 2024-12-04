@@ -50,7 +50,6 @@ az ad sp create-for-rbac --name <name_app> --role Owner --scopes /subscriptions/
 
 ```
 
-
 ### 6. Connexion en tant qu'Application
 
 Utilisez les informations de votre application pour vous connecter via Azure CLI :
@@ -64,7 +63,6 @@ az login --service-principal --username <app_id> --password <app_secret> --tenan
 
 
 ## Gestion des Rôles et Droits
----------------------------
 
 ### 7. Attribuer des Rôles à l'Application
 
