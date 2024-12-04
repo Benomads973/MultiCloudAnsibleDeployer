@@ -13,7 +13,7 @@ WORKDIR /home
 # Install packages in one RUN command to reduce layers and remove unnecessary dependencies after use
 RUN apk update && \
     apk add --no-cache \
-        py3-requests py3-google-auth py3-requests gnupg lsb-release bash curl python3 python3-dev \
+        py3-requests py3-google-auth py3-requests gnupg lsb-release curl python3 python3-dev \
         py3-pip cairo-dev gobject-introspection krb5-libs make krb5-dev gobject-introspection-dev gcc g++ \
         gettext curl && \
     # Install kubectl
@@ -40,6 +40,15 @@ RUN ${VENV_PATH}/bin/python3 -m ansible galaxy collection install google.cloud &
     # Clean up ansible-galaxy cache
     rm -rf /root/.ansible/collections
 
+# Image minimale
+FROM python:3.11-alpine
+
+ENV VENV_PATH /opt/venv
+ENV BUILD_PATH ./docker/v1
+
+COPY --from=0 ${VENV_PATH} ${VENV_PATH}
+COPY --from=0 /usr/local/bin/kubectl /usr/local/bin/kubectl
+
 # Copy remaining files
 COPY ${BUILD_PATH}/init.sh /home/init.sh
 COPY ${BUILD_PATH}/azure_credentials.ini /root/.azure/credentials
@@ -48,9 +57,10 @@ COPY ${BUILD_PATH}/gcloud.sh /home/gcloud.sh
 
 # Set file permissions and finalize
 RUN chmod +x /home/init.sh && \
-    chmod 755 /home/gcloud.sh && \
-    mkdir -p /var/logs && \
-    touch /var/logs/watcher
+    chmod 755 /home/gcloud.sh
+
+RUN apk update && \
+    apk add --no-cache gettext bash
 
 WORKDIR /home/ansible
 
