@@ -96,7 +96,7 @@ docker rm -f ansible-stable
 
 ```bash
 # Mode run de la version stable
-docker run -i --rm -v /var/run/docker.sock:/var/run/docker.sock -e "subscription_id=$subscription_id" -e "client_id=$client_id" -e "secret=$secret" -e "tenant=$tenant" docker.io/maissacrement/ansibledind:b8c1df7-stablerun ansible-playbook -i ./inventory/staging/hosts.yml site.yml
+docker run -i --rm -v /var/run/docker.sock:/var/run/docker.sock -e "subscription_id=$subscription_id" -e "client_id=$client_id" -e "secret=$secret" -e "tenant=$tenant" docker.io/maissacrement/ansibledind:b8c1df7-stable run ansible-playbook -i ./inventory/staging/hosts.yml site.yml
 ```
 
 ### V1
@@ -111,7 +111,7 @@ docker rm -f ansible-v1
 
 ```bash
 # Mode run de la version V1
-docker run -i --rm -v /var/run/docker.sock:/var/run/docker.sock -e "subscription_id=$subscription_id" -e "client_id=$client_id" -e "secret=$secret" -e "tenant=$tenant" docker.io/maissacrement/ansibledind:b8c1df7-v1run ansible-playbook -i ./inventory/staging/hosts.yml site.yml
+docker run -i --rm -v /var/run/docker.sock:/var/run/docker.sock -e "subscription_id=$subscription_id" -e "client_id=$client_id" -e "secret=$secret" -e "tenant=$tenant" docker.io/maissacrement/ansibledind:b8c1df7-v1 run ansible-playbook -i ./inventory/staging/hosts.yml site.yml
 ```
 
 ## ISSUE
