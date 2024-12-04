@@ -3,15 +3,9 @@
 ## IMAGE
 
 ```yaml
-image: docker.io/maissacrement/ansibledind
+image: docker.io/maissacrement/ansibledind-stable
 ```
 [download](https://hub.docker.com/repository/docker/maissacrement/ansibledind/general)
-
-## HOW TO USE
-
-Modify kubernetes and ansible file:
-
-`make dev` or `docker run -i --rm -v /var/run/docker.sock:/var/run/docker.sock -e "subscription_id=$subscription_id" -e "client_id=$client_id" -e "secret=$secret" -e "tenant=$tenant" docker.io/maissacrement/ansibledind "ansible-playbook /home/deploy.yml"`
 
 ## DOCKER API
 
@@ -93,22 +87,31 @@ docker exec -it /ansible-v1 /bin/bash -c "ansible-playbook -i ./inventory/stagin
 ### Stable
 
 ```bash
-# depuis le repertoire courrant
-docker run -d --name ansible-stable -v "./ansible:/home/ansible" -v /var/run/docker.sock:/var/run/docker.sock --env-file=.env maissacrement/ansibledind:6c1058d-stable
+# Mode demon de la version stable
+docker run -d --name ansible-stable -v "./ansible:/home/ansible" -v /var/run/docker.sock:/var/run/docker.sock --env-file=.env maissacrement/ansibledind:dc9ddeb-stable
 docker exec -it ansible-stable /bin/bash -c "ansible-playbook -i ./inventory/staging/hosts.yml site.yml"
 docker stop ansible-stable
 docker rm -f ansible-stable
 ```
 
+```bash
+# Mode run de la version stable
+docker run -i --rm -v /var/run/docker.sock:/var/run/docker.sock -e "subscription_id=$subscription_id" -e "client_id=$client_id" -e "secret=$secret" -e "tenant=$tenant" docker.io/maissacrement/ansibledind-stable run ansible-playbook -i ./inventory/staging/hosts.yml site.yml
+```
+
 ### V1
 
 ```bash
-# depuis le repertoire courrant
-docker run -d --name ansible-v1 -v "./ansible:/home/ansible"  -v /var/run/docker.sock:/var/run/docker.sock --env-file=.env maissacrement/ansibledind:d7de15d-v1
-
+# Mode demon de la version V1
+docker run -d --name ansible-v1 -v "./ansible:/home/ansible"  -v /var/run/docker.sock:/var/run/docker.sock --env-file=.env maissacrement/ansibledind:dc9ddeb-v1
 docker exec -it /ansible-v1 /bin/bash -c "ansible-playbook -i ./inventory/staging/hosts.yml site.yml"
 docker stop ansible-v1
 docker rm -f ansible-v1
+```
+
+```bash
+# Mode run de la version V1
+docker run -i --rm -v /var/run/docker.sock:/var/run/docker.sock -e "subscription_id=$subscription_id" -e "client_id=$client_id" -e "secret=$secret" -e "tenant=$tenant" docker.io/maissacrement/ansibledind-stable run ansible-playbook -i ./inventory/staging/hosts.yml site.yml
 ```
 
 ## ISSUE
