@@ -2,7 +2,7 @@ version: '3.9'
 
 services:
   ansible:
-    image: docker.io/maissacrement/ansibledind
+    image: docker.io/maissacrement/ansibledind-v1
     container_name: ansibledind2
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock

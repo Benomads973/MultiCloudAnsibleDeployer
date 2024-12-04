@@ -68,4 +68,6 @@ WORKDIR /home/ansible
 RUN echo "export PATH=${PATH}:/usr/local/bin:${VENV_PATH}/bin" >> ~/.bashrc && \
     echo "ansible-playbook -i ./inventory/staging/hosts.yml site.yml" >> ~/.bash_history
 
+ENV PATH "/usr/local/bin:${VENV_PATH}/bin:$PATH"
+
 ENTRYPOINT ["/home/entrypoint.sh"]

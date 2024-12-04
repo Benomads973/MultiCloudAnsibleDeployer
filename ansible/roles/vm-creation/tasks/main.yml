@@ -11,4 +11,4 @@
       --public-ip-sku Standard \
       --admin-username "{{ vmusername }}" \
       --admin-password "{{ vmpassword }}" \
-      --vnet-name "{{ virtual_net_name }}"
+      --vnet-name "{{ physical_interface_name }}"

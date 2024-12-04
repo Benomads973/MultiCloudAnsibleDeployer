@@ -84,17 +84,31 @@ make dev # lancer le demon de l'image docker en background et s'y attacher sous 
 ```bash
 # depuis le repertoire courrant
 docker build -t ansible-v1 . -f ./docker/V1/Dockerfile
-docker run -d -v "./ansible:/home/ansible" -v /var/run/docker.sock:/var/run/docker.sock --name ansible-v1 --env-file=$(env) ansible-v1
+docker run -d -v "./ansible:/home/ansible" -v /var/run/docker.sock:/var/run/docker.sock --name ansible-v1 --env-file=.env ansible-v1
 docker exec -it /ansible-v1 /bin/bash -c "ansible-playbook -i ./inventory/staging/hosts.yml site.yml"
 ```
 
 ## How to use CI
 
+### Stable
+
 ```bash
 # depuis le repertoire courrant
-docker build -t ansible-v1 . -f ./docker/V1/Dockerfile
-docker run -d -v "./ansible:/home/ansible" -v /var/run/docker.sock:/var/run/docker.sock --name ansible-v1 --env-file=$(env) ansible-v1
+docker run -d --name ansible-stable -v "./ansible:/home/ansible" -v /var/run/docker.sock:/var/run/docker.sock --env-file=.env maissacrement/ansibledind:6c1058d-stable
+docker exec -it ansible-stable /bin/bash -c "ansible-playbook -i ./inventory/staging/hosts.yml site.yml"
+docker stop ansible-stable
+docker rm -f ansible-stable
+```
+
+### V1
+
+```bash
+# depuis le repertoire courrant
+docker run -d --name ansible-v1 -v "./ansible:/home/ansible"  -v /var/run/docker.sock:/var/run/docker.sock --env-file=.env maissacrement/ansibledind:d7de15d-v1
+
 docker exec -it /ansible-v1 /bin/bash -c "ansible-playbook -i ./inventory/staging/hosts.yml site.yml"
+docker stop ansible-v1
+docker rm -f ansible-v1
 ```
 
 ## ISSUE

@@ -7,7 +7,7 @@ region: australiacentral
 myvmname: testvm12
 osimage: Win2022Datacenter
 vmusername: azureuser
-vmpassword: defaultpasscanbeoverride
+vmpassword: defaultpasscanbeoverride91000@@$$
 virtual_net_cidr: 10.1.0.0/16
 vnet_name: vNet
 virtual_subnet_cidr: 10.1.1.0/24 # Inside virtual network 254 services max
