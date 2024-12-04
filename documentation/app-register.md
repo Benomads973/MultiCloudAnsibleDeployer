@@ -1,55 +1,100 @@
-# Enregistrer une application sur Azure pour vos déploiements d’infrastructure as code
+# Enregistrer une Application sur Azure pour vos Déploiements d'Infrastructure as Code
+====================================================================================
 
-Introduction
-Il est recommandé d'enregistrer une application sur Azure pour vos déploiements d'infrastructure as code. Cela permet d'utiliser des identifiants sécurisés et automatisés, offrant ainsi une gestion des accès plus flexible et sécurisée par rapport à l'utilisation d'un compte utilisateur avec mot de passe.
+## Introduction
+------------
 
-## Méthode
-Dans la barre de recherche Azure, tapez : Microsoft Entra ID.
-Ensuite, cliquez sur "Gérer", puis sur "Inscription d'application".
-                                                                                                            <img src="../assets/inscription.png">                                                                    
+L'enregistrement d'une application sur Azure pour vos déploiements d'infrastructure as code est une pratique recommandée. Elle vous permet d'utiliser des identifiants sécurisés et automatisés, offrant une gestion des accès plus flexible et sécurisée que l'utilisation d'un compte utilisateur classique avec mot de passe.
 
-Sous Sup de Vinci | Inscription d'application, vous verrez "Nouvelle application".
-Donnez-lui un nom, par exemple IAC_DEPLOYER, et conservez les mêmes paramètres.
- 
+## Étapes d'Enregistrement de l'Application
+----------------------------------------
+
+### 1. Accéder à Microsoft Entra ID
+
+-   Dans la barre de recherche Azure, tapez : Microsoft Entra ID.
+-   Cliquez sur Gérer, puis sur Inscriptions d'application.
+
+<img src="../assets/inscription.png">
+
+### 2. Créer une Nouvelle Application
+
+-   Sous votre répertoire, cliquez sur Nouvelle inscription d'application.
+-   Donnez un nom à votre application, par exemple : `IAC_DEPLOYER`.
+-   Laissez les autres paramètres par défaut et cliquez sur "Enregistrer".
+
 <img src="../assets/newapp.png">
-            
-Vous accéderez à votre application avec ses informations.
+
+### 3. Récupérer le `Client ID`
+
+-   Une fois l'application créée, vous serez redirigé vers la page d'informations de l'application.
+-   Notez le `client_id`, qui correspond au `<username>` de votre application.
 
 <img src="../assets/appclientid.png">
- 
-Vous venez de récupérer le « client_id », qui n’est autre que l’<username> de votre application.
 
-Les secrets
-Toujours dans votre application, à gauche, vous devrez chercher l’onglet "Gérer", puis sélectionner "Certificats & Secrets".
+## Configuration des Secrets
+-------------------------
+
+### 4. Ajouter un Secret
+
+-   Dans le menu de gauche, sous l'onglet Gérer, sélectionnez Certificats et secrets.
+-   Cliquez sur Nouveau secret client pour générer un secret.
+-   Copiez la valeur du secret généré (assurez-vous de le faire immédiatement, car elle ne sera plus visible par la suite).
 
 <img src="../assets/appsecret.png">
- 
-Vous devrez générer un nouveau secret et extraire la clé dans le champ "valeur" du tableau.
 
-Prérequis avant de vous connecter à votre application
-Connectez-vous en tant qu’utilisateur, peu importe où vous le faites (en local ou sur Azure CLI), et reliez votre abonnement à votre application :
-az login --username <user> --password <pass> 
-az ad sp create-for-rbac --name <name_app> --role Owner –scopes /subscriptions/<subscription_id>
+## Connexion et Configuration des Droits
+-------------------------------------
 
-Connection en tant qu’application :
- az login --service-principal --username <app_id> --password <app_secret> --tenant <tenant>
+### 5. Associer un Abonnement à votre Application
 
-Comme je vous l'ai dit, tous les droits sont gérés par votre abonnement, donc par exemple avec 'Azure for Students' :
+Avant de vous connecter en tant qu'application, connectez-vous avec un compte utilisateur et liez votre abonnement à l'application :
+
+```bash
+az login --username <user> --password <pass>
+az ad sp create-for-rbac --name <name_app> --role Owner --scopes /subscriptions/<subscription_id>
+
+```
+
+
+### 6. Connexion en tant qu'Application
+
+Utilisez les informations de votre application pour vous connecter via Azure CLI :
+
+```bash
+az login --service-principal --username <app_id> --password <app_secret> --tenant <tenant>
+
+```
 
 <img src="../assets/subscription.png">
-  
-Si vous allez sur IAM et que vous sélectionnez « Ajouter une attribution de rôle » 
+
+
+## Gestion des Rôles et Droits
+---------------------------
+
+### 7. Attribuer des Rôles à l'Application
+
+-   Accédez à IAM (Contrôle d'accès).
+-   Cliquez sur Ajouter une attribution de rôle.
 
 <img src="../assets/IAM.png">
- 
-Pour l'exemple, je vais sélectionner un rôle avec le plus de privilèges dans « Rôles d’administrateur privilégié » :
+
+#### Sélection d'un Rôle
+
+-   Dans la liste des rôles, sélectionnez celui que vous souhaitez attribuer à l'application.
+-   Exemple : un rôle d'administrateur privilégié.
 
 <img src="../assets/IAM_ROLES.png">
 
-Quand vous cliquez sur « Suivant », dans « Membres », vous sélectionnez « Sélectionner des membres » et vous choisissez votre application :
+#### Sélection de l'Application
 
-<img src="../assets/IAM_ADD_ROLES.png">
+-   Cliquez sur "Suivant".
+-   Dans l'onglet "Membres", sélectionnez "Sélectionner des membres".
+-   Choisissez votre application.
 
-Le rôle souhaité est donc ajouté à votre application, qui dispose des droits dans le périmètre des rôles que vous lui avez attribués. Ces rôles peuvent être multiples.
+<img src="../assets/IAM_ADD_ROLES.png"
+
+### 8. Vérification des Droits
+
+Une fois le rôle ajouté, votre application disposera des permissions correspondantes au rôle attribué. Ces permissions peuvent être ajustées et combinées avec plusieurs rôles.
 
 <img src="../assets/IAM_APPLY_ROLES.png">
