@@ -1,4 +1,4 @@
-FROM gcr.io/google.com/cloudsdktool/google-cloud-cli:alpine
+FROM python:3.11.10-alpine3.20
 
 RUN mkdir /root/.azure
 
@@ -31,27 +31,33 @@ ENV PATH="/opt/venv/bin:$PATH"
 RUN ansible-galaxy collection install azure.azcollection &&\
     ansible-galaxy collection install google.cloud
 
-COPY ${BUILD_PATH}/entrypoint.sh /home/entrypoint.sh
+# Image minimale
+FROM python:3.11-alpine
 
-RUN chmod +x /home/entrypoint.sh &&\
-    mkdir -p /var/logs &&\
-    touch /var/logs/watcher
+ENV VENV_PATH /opt/venv
+ENV SHARED_PATH ./docker/shared
 
-COPY ${BUILD_PATH}/azure_credentials.ini /root/.azure/credentials
+COPY --from=0 ${VENV_PATH} ${VENV_PATH}
+COPY --from=0 /usr/local/bin/kubectl /usr/local/bin/kubectl
+COPY --from=0 /root/.ansible /root/.ansible
+
+# Copy remaining files
+COPY ${SHARED_PATH}/entrypoint.sh /home/entrypoint.sh
+COPY ${SHARED_PATH}/azure_credentials.ini /root/.azure/credentials
 COPY ./ansible /home/ansible
+COPY ${SHARED_PATH}/gcloud.sh /home/gcloud.sh
 
-USER root
+# Set file permissions and finalize
+RUN chmod +x /home/entrypoint.sh && \
+    chmod 755 /home/gcloud.sh
 
-# TOOLBOX: Établir une hiérarchie permettant à l'utilisateur de créer un ensemble d'outils, afin qu'ils puissent utiliser des scripts déjà fonctionnels de manière plus efficace.
-ENV WORKDIR "workdir"
-RUN mkdir -p ${WORKDIR}/ansible \
-  && mkdir -p ${WORKDIR}/manifest   
-WORKDIR ${WORKDIR}
+RUN apk update && \
+    apk add --no-cache gettext bash
 
-COPY ${BUILD_PATH}/gcloud.sh ./gcloud.sh
-RUN chmod 755 gcloud.sh
 WORKDIR /home/ansible
 
-RUN echo "export PATH=${PATH}:/usr/local/bin:${VENV_PATH}/bin" >> ~/.bashrc
-RUN echo "ansible-playbook -i ./inventory/staging/hosts.yml site.yml" >> ~/.bash_history
+# Add environment variables and commands
+RUN echo "export PATH=${PATH}:/usr/local/bin:${VENV_PATH}/bin" >> ~/.bashrc && \
+    echo "ansible-playbook -i ./inventory/staging/hosts.yml site.yml" >> ~/.bash_history
+
 ENTRYPOINT ["/home/entrypoint.sh"]

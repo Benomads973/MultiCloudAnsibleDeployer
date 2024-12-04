@@ -44,19 +44,19 @@ RUN ${VENV_PATH}/bin/python3 -m ansible galaxy collection install google.cloud &
 FROM python:3.11-alpine
 
 ENV VENV_PATH /opt/venv
-ENV BUILD_PATH ./docker/v1
+ENV SHARED_PATH ./docker/shared
 
 COPY --from=0 ${VENV_PATH} ${VENV_PATH}
 COPY --from=0 /usr/local/bin/kubectl /usr/local/bin/kubectl
 
 # Copy remaining files
-COPY ${BUILD_PATH}/init.sh /home/init.sh
-COPY ${BUILD_PATH}/azure_credentials.ini /root/.azure/credentials
+COPY ${SHARED_PATH}/entrypoint.sh /home/entrypoint.sh
+COPY ${SHARED_PATH}/azure_credentials.ini /root/.azure/credentials
 COPY ./ansible /home/ansible
-COPY ${BUILD_PATH}/gcloud.sh /home/gcloud.sh
+COPY ${SHARED_PATH}/gcloud.sh /home/gcloud.sh
 
 # Set file permissions and finalize
-RUN chmod +x /home/init.sh && \
+RUN chmod +x /home/entrypoint.sh && \
     chmod 755 /home/gcloud.sh
 
 RUN apk update && \
@@ -68,4 +68,4 @@ WORKDIR /home/ansible
 RUN echo "export PATH=${PATH}:/usr/local/bin:${VENV_PATH}/bin" >> ~/.bashrc && \
     echo "ansible-playbook -i ./inventory/staging/hosts.yml site.yml" >> ~/.bash_history
 
-ENTRYPOINT ["/home/init.sh"]
+ENTRYPOINT ["/home/entrypoint.sh"]
