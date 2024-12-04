@@ -1,13 +1,10 @@
 # Enregistrer une Application sur Azure pour vos Déploiements d'Infrastructure as Code
-====================================================================================
 
 ## Introduction
-------------
 
 L'enregistrement d'une application sur Azure pour vos déploiements d'infrastructure as code est une pratique recommandée. Elle vous permet d'utiliser des identifiants sécurisés et automatisés, offrant une gestion des accès plus flexible et sécurisée que l'utilisation d'un compte utilisateur classique avec mot de passe.
 
 ## Étapes d'Enregistrement de l'Application
-----------------------------------------
 
 ### 1. Accéder à Microsoft Entra ID
 
@@ -32,7 +29,6 @@ L'enregistrement d'une application sur Azure pour vos déploiements d'infrastruc
 <img src="../assets/appclientid.png">
 
 ## Configuration des Secrets
--------------------------
 
 ### 4. Ajouter un Secret
 
@@ -43,7 +39,6 @@ L'enregistrement d'une application sur Azure pour vos déploiements d'infrastruc
 <img src="../assets/appsecret.png">
 
 ## Connexion et Configuration des Droits
--------------------------------------
 
 ### 5. Associer un Abonnement à votre Application
 
@@ -91,7 +86,7 @@ az login --service-principal --username <app_id> --password <app_secret> --tenan
 -   Dans l'onglet "Membres", sélectionnez "Sélectionner des membres".
 -   Choisissez votre application.
 
-<img src="../assets/IAM_ADD_ROLES.png"
+<img src="../assets/IAM_ADD_ROLES.png">
 
 ### 8. Vérification des Droits
 
