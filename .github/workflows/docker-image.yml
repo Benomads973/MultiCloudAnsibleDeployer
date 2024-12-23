@@ -17,18 +17,12 @@ jobs:
       - name: Build the Docker image
         run: make build-stable
 
-  common-setup: &common-setup
-    container:
-      image: maissacrement/ansibledind:b8c1df7-stable
-      options: --entrypoint ["/home/entrypoint.sh", "run"]
-    steps:
-      - name: Checkout Code
-        uses: actions/checkout@v3
-
   check:
     name: Syntax Check
     runs-on: ubuntu-latest
-    <<: *common-setup
+    container:
+      image: maissacrement/ansibledind:b8c1df7-stable
+      options: --entrypoint ["/home/entrypoint.sh", "run"]
     steps:
       - name: Checkout Code
         uses: actions/checkout@v3
@@ -45,7 +39,9 @@ jobs:
   lint:
     name: Ansible Lint
     runs-on: ubuntu-latest
-    <<: *common-setup
+    container:
+      image: maissacrement/ansibledind:b8c1df7-stable
+      options: --entrypoint ["/home/entrypoint.sh", "run"]
     steps:
       - name: Checkout Code
         uses: actions/checkout@v3
