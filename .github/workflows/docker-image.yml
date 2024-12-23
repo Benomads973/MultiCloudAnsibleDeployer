@@ -66,7 +66,19 @@ jobs:
           export VAULT_PASSWORD="hello"
           python3 /root/.ansible_vault_secret/create-vault-local-secret-for-gitlab.py --plain-text-inventory ./ansible/inventory/staging/hosts.yml --vault-file test.yml --password hello
           export VAULT_HOSTS_SECRETS="$(cat test.yml)"
+          
+      - name: Compare generate inventory with original
+        run: |
           echo "================= generate inventory ================="
           python3 /root/.ansible_vault_secret/generate-inventory.py --list
           echo "================= original inventory ================="
           cat ./ansible/inventory/staging/hosts.yml
+
+      - name: Verivify inventory are available on ansible
+        run: |
+          echo "================= veryfy inventory ================="
+          ansible-inventory -i /root/.ansible_vault_secret/generate-inventory.py --list
+
+      - name: Ping hosts from my generic inventory
+        run: |
+          ansible -m ping -i /root/.ansible_vault_secret/generate-inventory.py all
