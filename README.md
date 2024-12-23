@@ -64,6 +64,8 @@ client_id: <'Application (client) ID || ID d'application (client)' field>
 secret: <'value || valeur' field> # Get secret value
 ```
 
+[Complete doc with illusration](./documentation/app-register.md)
+
 ### Env with Vault (From the container)
 
 This Python script directly generates a dynamic inventory based on environment variables or a specific file, which ensures that no sensitive data is left in the repository. You can store all types of secrets, such as those used by the Azure CLI. It was specifically created for cloud and on-premise hosts.
