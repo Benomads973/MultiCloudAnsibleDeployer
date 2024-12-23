@@ -64,7 +64,7 @@ jobs:
       - name: Run Vault execution
         run: |
           export VAULT_PASSWORD="hello"
-          python3 /root/.ansible_vault_secret/create-vault-local-secret-for-gitlab.py --plain-text-inventory ./inventory/staging/hosts.yml --vault-file test.yml --password hello
+          python3 /root/.ansible_vault_secret/create-vault-local-secret-for-gitlab.py --plain-text-inventory ./ansible/inventory/staging/hosts.yml --vault-file test.yml --password hello
           export VAULT_HOSTS_SECRETS="$(cat test.yml)"
           echo "================= generate inventory ================="
           python3 /root/.ansible_vault_secret/generate-inventory.py --list
