@@ -8,6 +8,10 @@ on:
     branches:
       - main
 
+runs:
+  image: maissacrement/ansibledind:b8c1df7-stable
+  entrypoint: "/home/entrypoint.sh run"
+
 jobs:
 
   build:
@@ -19,9 +23,7 @@ jobs:
 
   check:
     name: Syntax Check
-    runs:
-      image: maissacrement/ansibledind:b8c1df7-stable
-      entrypoint: "/home/entrypoint.sh run"
+    
     steps:
       - name: Checkout Code
         uses: actions/checkout@v3
