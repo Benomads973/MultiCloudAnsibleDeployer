@@ -22,7 +22,7 @@ jobs:
     runs-on: ubuntu-latest
     container:
       image: maissacrement/ansibledind:b8c1df7-stable
-      args: ["run"]
+      entrypoint: "/home/entrypoint.sh run"
     steps:
       - name: Checkout Code
         uses: actions/checkout@v3
