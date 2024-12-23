@@ -164,7 +164,7 @@ docker run -i --rm -v /var/run/docker.sock:/var/run/docker.sock -e "subscription
 
 ## USING IN CI/CD
 
-GitHub Example: Example of using our dynamic vault inventory script in a local decryption context. It's recommended to use environment variables.
+GitHub: Example of using our dynamic vault inventory script in a local decryption context. It's recommended to use environment variables.
 
 ```yaml
 vault-is-working:
@@ -191,11 +191,11 @@ vault-is-working:
         ansible -m ping -i /root/.ansible_vault_secret/generate-inventory.py all
 ```
 
-GitLab Example: Example of using our dynamic vault inventory script in a local decryption context. Again, using environment variables is recommended.
+GitLab: Example of using our dynamic vault inventory script in a local decryption context. Again, using environment variables is recommended.
 
 ```yaml
 image: 
-  name: maissacrement/ansibledind:b8c1df7-stable
+  name: maissacrement/ansibledind:10e77ca-stable
   entrypoint: ["/home/entrypoint.sh", "run"]
 
 ...
