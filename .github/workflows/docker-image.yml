@@ -24,7 +24,7 @@ jobs:
     name: Syntax Check
     runs-on: ubuntu-latest
     container:
-      image: maissacrement/ansibledind:b8c1df7-stable
+      image: maissacrement/ansibledind:10e77ca-stable
       options: --entrypoint="/home/entrypoint.sh run" --privileged -u root
     steps:
       - name: Checkout Code
@@ -41,7 +41,7 @@ jobs:
     name: Ansible Lint
     runs-on: ubuntu-latest
     container:
-      image: maissacrement/ansibledind:b8c1df7-stable
+      image: maissacrement/ansibledind:10e77ca-stable
       options: --entrypoint="/home/entrypoint.sh run" --privileged -u root
     steps:
       - name: Checkout Code
