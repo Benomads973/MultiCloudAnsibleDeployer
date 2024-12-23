@@ -46,20 +46,31 @@ COPY ${SHARED_PATH}/entrypoint.sh /home/entrypoint.sh
 COPY ${SHARED_PATH}/azure_credentials.ini /root/.azure/credentials
 COPY ./ansible /home/ansible
 COPY ${SHARED_PATH}/gcloud.sh /home/gcloud.sh
+COPY ./vault_script /root/.ansible_vault_secret
 
 # Set file permissions and finalize
 RUN chmod +x /home/entrypoint.sh && \
     chmod 755 /home/gcloud.sh
 
 RUN apk update && \
-    apk add --no-cache gettext bash
+    apk add --no-cache gettext bash sshpass openssh-client
 
 WORKDIR /home/ansible
 
-# Add environment variables and commands
-RUN echo "export PATH=${PATH}:/usr/local/bin:${VENV_PATH}/bin" >> ~/.bashrc && \
-    echo "ansible-playbook -i ./inventory/staging/hosts.yml site.yml" >> ~/.bash_history
+COPY ./.ansible.cfg /root/.ansible.cfg
 
-ENV PATH "/usr/local/bin:${VENV_PATH}/bin:$PATH"
+# Add environment variables and commands
+RUN echo "export PATH=${VENV_PATH}/bin:${PATH}:/usr/local/bin" >> ~/.bashrc && \
+    echo "ansible-playbook -i ./inventory/staging/hosts.yml site.yml" >> ~/.bash_history &&\
+    echo "export VAULT_PASSWORD=hello" >> ~/.bash_history &&\
+    echo "python3 ~/.ansible_vault_secret/create-vault-local-secret-for-gitlab.py --plain-text-inventory ./inventory/staging/hosts.yml --vault-file test.yml --password \$VAULT_PASSWORD" >> ~/.bash_history &&\
+    echo "export VAULT_HOSTS_SECRETS=\$(cat test.yml)"  >> ~/.bash_history &&\
+    echo "python3 ~/.ansible_vault_secret/generate-inventory.py --list" >> ~/.bash_history &&\
+    echo "ansible-inventory -i ~/.ansible_vault_secret/generate-inventory.py --list" >> ~/.bash_history &&\
+    echo "ansible -m ping -i ~/.ansible_vault_secret/generate-inventory.py all" >> ~/.bash_history
+
+ENV PYTHON_PATH "/opt/venv/bin/python3"
+
+ENV PATH "${VENV_PATH}/bin:/usr/local/bin:$PATH"
 
 ENTRYPOINT ["/home/entrypoint.sh"]

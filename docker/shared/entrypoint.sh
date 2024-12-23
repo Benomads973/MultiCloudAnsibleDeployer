@@ -26,7 +26,7 @@ case "$1" in
             exec "$@"
         else
             # Si aucun script ou commande, démarrer un shell interactif
-            exec /bin/sh
+            exec /bin/bash
         fi
         ;;
     daemon|*)

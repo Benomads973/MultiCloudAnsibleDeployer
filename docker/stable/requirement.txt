@@ -161,3 +161,6 @@ xmltodict==0.13.0
 yarl==1.12.1
 zipp==3.20.2
 azure_cli==2.67.0
+ansible_vault==2.1.0
+python-dotenv==1.0.1
+ansible-lint==24.12.2

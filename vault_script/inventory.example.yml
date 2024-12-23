@@ -1,0 +1,7 @@
+all:
+  hosts:
+    node-master:
+      ansible_port: test
+      ansible_user: test
+      ansible_ssh_host: test
+      ansible_ssh_pass: test

@@ -3,7 +3,7 @@
 ## IMAGE
 
 ```yaml
-image: docker.io/maissacrement/ansibledind-stable
+image: docker.io/maissacrement/ansibledind:b8c1df7-stable
 ```
 [download](https://hub.docker.com/repository/docker/maissacrement/ansibledind/general)
 
@@ -114,6 +114,32 @@ docker rm -f ansible-v1
 docker run -i --rm -v /var/run/docker.sock:/var/run/docker.sock -e "subscription_id=$subscription_id" -e "client_id=$client_id" -e "secret=$secret" -e "tenant=$tenant" docker.io/maissacrement/ansibledind:b8c1df7-v1 run ansible-playbook -i ./inventory/staging/hosts.yml site.yml
 ```
 
-## ISSUE
+
+### How to use with Vault
+
+```bash
+### DEV ONLY ###
+export VAULT_PASSWORD="hello"
+
+python3 ~/.ansible_vault_secret/create-vault-local-secret-for-gitlab.py --plain-text-inventory ./inventory/staging/hosts.yml --vault-file test.yml --password hello
+
+export VAULT_HOSTS_SECRETS="$(cat test.yml)"
+### END DEV ###
+
+## VAULT_HOSTS_SECRETS and VAULT_PASSWORD need be integrated to the CI
+
+python3 ~/.ansible_vault_secret/generate-inventory.py --list
+```
+
+[Voir la documentation complète](./vault_script)
+
+If all is working you can use the dynamics inventory:
+
+```bash
+ansible-inventory -i ~/.ansible_vault_secret/generate-inventory.py --list
+ansible -m ping -i ~/.ansible_vault_secret/generate-inventory.py all
+```
+
+## Next
 
 - Mettre en place une TOOLBOX
