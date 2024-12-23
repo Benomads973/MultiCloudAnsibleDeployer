@@ -69,4 +69,4 @@ jobs:
           echo "================= generate inventory ================="
           python3 /root/.ansible_vault_secret/generate-inventory.py --list
           echo "================= original inventory ================="
-          cat ./inventory/staging/hosts.yml
+          cat ./ansible/inventory/staging/hosts.yml
