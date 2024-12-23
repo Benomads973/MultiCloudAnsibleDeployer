@@ -22,7 +22,9 @@ jobs:
     runs-on: ubuntu-latest
     container:
       image: maissacrement/ansibledind:b8c1df7-stable
-      options: --entrypoint ["/home/entrypoint.sh", "run"]
+      options: --privileged # Autoriser Docker-in-Docker
+      entrypoint: /home/entrypoint.sh
+      args: ["run"] # Ajout explicite de 'run'
     steps:
       - name: Checkout Code
         uses: actions/checkout@v3
@@ -41,7 +43,9 @@ jobs:
     runs-on: ubuntu-latest
     container:
       image: maissacrement/ansibledind:b8c1df7-stable
-      options: --entrypoint ["/home/entrypoint.sh", "run"]
+      options: --privileged # Autoriser Docker-in-Docker
+      entrypoint: /home/entrypoint.sh
+      args: ["run"] # Ajout explicite de 'run'
     steps:
       - name: Checkout Code
         uses: actions/checkout@v3
