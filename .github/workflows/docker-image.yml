@@ -35,7 +35,7 @@ jobs:
       - name: Run Ansible Syntax Check
         working-directory: ${{ env.WORKDIR }}
         run: >
-          ansible-playbook --syntax-check site.yml -i ./inventory/production/hosts.yml --extra-vars "ansible_role_include_tasks=true"
+          ansible-playbook --syntax-check site.yml -i ./inventory/staging/hosts.yml --extra-vars "ansible_role_include_tasks=true"
 
   lint:
     name: Ansible Lint
