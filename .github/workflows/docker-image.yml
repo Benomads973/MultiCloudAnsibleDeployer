@@ -19,8 +19,7 @@ jobs:
 
   check:
     name: Syntax Check
-    runs-on: ubuntu-latest
-    container:
+    runs:
       image: maissacrement/ansibledind:b8c1df7-stable
       entrypoint: "/home/entrypoint.sh run"
     steps:
