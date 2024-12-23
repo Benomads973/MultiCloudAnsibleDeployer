@@ -3,7 +3,7 @@
 ## IMAGE
 
 ```yaml
-image: docker.io/maissacrement/ansibledind:4f3419c-stable
+image: docker.io/maissacrement/ansibledind:10e77ca-stable
 ```
 [download](https://hub.docker.com/repository/docker/maissacrement/ansibledind/general)
 

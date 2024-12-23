@@ -50,3 +50,20 @@ jobs:
       - name: Run Ansible Lint
         working-directory: ${{ env.WORKDIR }}
         run: ansible-lint -vv
+
+  vault-is-working:
+    name: Ansible Lint
+    runs-on: ubuntu-latest
+    container:
+      image: maissacrement/ansibledind:10e77ca-stable
+      options: --entrypoint="/home/entrypoint.sh run" --privileged -u root
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v3
+
+      - name: Run Vault execution
+        run: |
+          export VAULT_PASSWORD="hello"
+          python3 ~/.ansible_vault_secret/create-vault-local-secret-for-gitlab.py --plain-text-inventory ./inventory/staging/hosts.yml --vault-file test.yml --password hello
+          export VAULT_HOSTS_SECRETS="$(cat test.yml)"
+          python3 ~/.ansible_vault_secret/generate-inventory.py --list
