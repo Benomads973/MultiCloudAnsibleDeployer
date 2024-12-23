@@ -8,23 +8,8 @@ on:
     branches:
       - main
 
-runs:
-  image: maissacrement/ansibledind:b8c1df7-stable
-  entrypoint: "/home/entrypoint.sh run"
-  steps:
-    - name: Checkout Code
-      uses: actions/checkout@v3
-
-    - name: list repo
-      run: ls && pwd
-
-    - name: Run Ansible Syntax Check
-      run: >
-        ansible-playbook --syntax-check nodes-default-conf/site.yml
-        -i nodes-default-conf/inventory/inventory.yml
-        --extra-vars "ansible_role_include_tasks=true"
-
 jobs:
+
   build:
     runs-on: ubuntu-latest
     steps:
@@ -32,5 +17,34 @@ jobs:
       - name: Build the Docker image
         run: make build-stable
 
+  check:
+    name: Syntax Check
+    runs-on: ubuntu-latest
+    container:
+      image: maissacrement/ansibledind:b8c1df7-stable
+      options: --entrypoint="/home/entrypoint.sh run" --privileged -u root
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v3
 
+      - name: list repo
+        run: ls && pwd
 
+      - name: Run Ansible Syntax Check
+        run: >
+          ansible-playbook --syntax-check nodes-default-conf/site.yml
+          -i nodes-default-conf/inventory/inventory.yml
+          --extra-vars "ansible_role_include_tasks=true"
+
+  lint:
+    name: Ansible Lint
+    runs-on: ubuntu-latest
+    container:
+      image: maissacrement/ansibledind:b8c1df7-stable
+      options: --entrypoint=["/home/entrypoint.sh", "run"]
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v3
+
+      - name: Run Ansible Lint
+        run: ansible-lint -vv
