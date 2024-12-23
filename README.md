@@ -178,9 +178,11 @@ vault-is-working:
       uses: actions/checkout@v3  
     - name: Run Vault execution
       run: |
-        export VAULT_PASSWORD="hello"
-        python3 /root/.ansible_vault_secret/create-vault-local-secret-for-gitlab.py --plain-text-inventory ./ansible/inventory/staging/hosts.yml --vault-file test.yml --password hello
-        export VAULT_HOSTS_SECRETS="$(cat test.yml)"
+        #### Need be execute locally ####
+        export VAULT_PASSWORD="hello" # Need be stored GitHub environment secrets
+        python3 /root/.ansible_vault_secret/create-vault-local-secret-for-gitlab.py --plain-text-inventory ./ansible/inventory/staging/hosts.yml --vault-file test.yml --password hello # Generate locally inventory secret
+        #### Done local execution ####
+        export VAULT_HOSTS_SECRETS="$(cat test.yml)" # Get the inventory secret generated locally and store it in the GitHub environment secrets
         echo "================= generate inventory ================="
         python3 /root/.ansible_vault_secret/generate-inventory.py --list
         echo "================= original inventory ================="
@@ -204,9 +206,11 @@ vault-is-working:
   stage: deploy
   script:
     - echo "Building the project ${MY_SSH_PASS:-none}"
-    - export VAULT_PASSWORD="hello"
+    - #### Need be execute locally ####
+    - export VAULT_PASSWORD="hello" # Need be stored GitHub environment secrets
     - python3 /root/.ansible_vault_secret/create-vault-local-secret-for-gitlab.py --plain-text-inventory ./ansible/inventory/staging/hosts.yml --vault-file test.yml --password hello
-    - export VAULT_HOSTS_SECRETS="$(cat test.yml)"
+    - #### Done local execution ####
+    - export VAULT_HOSTS_SECRETS="$(cat test.yml)" # Get the inventory secret generated locally and store it in the GitHub environment secrets
     - echo "================= generate inventory ================="
     - python3 /root/.ansible_vault_secret/generate-inventory.py --list
     - echo "================= original inventory ================="
