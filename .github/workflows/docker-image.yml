@@ -8,17 +8,6 @@ on:
     branches:
       - main
 
-
-
-jobs:
-
-  build:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v3
-      - name: Build the Docker image
-        run: make build-stable
-
 runs:
   image: maissacrement/ansibledind:b8c1df7-stable
   entrypoint: "/home/entrypoint.sh run"
@@ -34,4 +23,14 @@ runs:
         ansible-playbook --syntax-check nodes-default-conf/site.yml
         -i nodes-default-conf/inventory/inventory.yml
         --extra-vars "ansible_role_include_tasks=true"
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - name: Build the Docker image
+        run: make build-stable
+
+
 
