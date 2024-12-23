@@ -3,7 +3,7 @@
 ## IMAGE
 
 ```yaml
-image: docker.io/maissacrement/ansibledind:b8c1df7-stable
+image: docker.io/maissacrement/ansibledind:4f3419c-stable
 ```
 [download](https://hub.docker.com/repository/docker/maissacrement/ansibledind/general)
 
@@ -116,6 +116,8 @@ docker run -i --rm -v /var/run/docker.sock:/var/run/docker.sock -e "subscription
 
 
 ### How to use with Vault
+
+In docker container u can now try my vault implementation of generic inventory
 
 ```bash
 ### DEV ONLY ###

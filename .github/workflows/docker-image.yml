@@ -1,18 +1,54 @@
-name: Docker Image CI
+name: CI/CD Workflow
 
 on:
   push:
-    branches: [ "main" ]
+    branches:
+      - main
   pull_request:
-    branches: [ "main" ]
+    branches:
+      - main
 
 jobs:
 
   build:
-
     runs-on: ubuntu-latest
-
     steps:
-    - uses: actions/checkout@v3
-    - name: Build the Docker image
-      run: make build
+      - uses: actions/checkout@v3
+      - name: Build the Docker image
+        run: make build-stable
+
+  common-setup: &common-setup
+    container:
+      image: maissacrement/ansibledind:b8c1df7-stable
+      options: --entrypoint ["/home/entrypoint.sh", "run"]
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v3
+
+  check:
+    name: Syntax Check
+    runs-on: ubuntu-latest
+    <<: *common-setup
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v3
+
+      - name: list repo
+        run: ls && pwd
+
+      - name: Run Ansible Syntax Check
+        run: >
+          ansible-playbook --syntax-check nodes-default-conf/site.yml
+          -i nodes-default-conf/inventory/inventory.yml
+          --extra-vars "ansible_role_include_tasks=true"
+
+  lint:
+    name: Ansible Lint
+    runs-on: ubuntu-latest
+    <<: *common-setup
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v3
+
+      - name: Run Ansible Lint
+        run: ansible-lint -vv
