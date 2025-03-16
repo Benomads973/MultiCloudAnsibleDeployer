@@ -38,8 +38,7 @@ def get_secrets(file_path=None):
     # Charger le fichier YAML
     try:
         with open(file_path, 'r', encoding='utf-8') as f:
-            secrets = f.read() # yaml.safe_load(f)
-            print(secrets)
+            secrets = f.read() # yaml.safe_load(f) print(secrets)
         return secrets
     except FileNotFoundError:
         raise FileNotFoundError(f"Le fichier spécifié {file_path} n'a pas été trouvé.")
