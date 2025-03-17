@@ -1,2 +1,4 @@
 **/.env
 .awx
+vault_script/inventory.yml
+vault_script/vault_hosts.yml
