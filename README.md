@@ -76,6 +76,8 @@ export VAULT_PASSWORD="hello"
 
 python3 ~/.ansible_vault_secret/create-vault-local-secret-for-gitlab.py --plain-text-inventory ./inventory/staging/hosts.yml --vault-file test.yml --password hello
 
+# All inventory block will be encrypted
+
 export VAULT_HOSTS_SECRETS="$(cat test.yml)"
 ### END DEV ###
 
