@@ -1,7 +1,0 @@
-all:
-  hosts:
-    node-master:
-      ansible_port: 22
-      ansible_user: root
-      ansible_ssh_host: 103.106.228.36
-      ansible_ssh_pass: 5fvOoXniRsJztId7QKjP
