@@ -7,6 +7,8 @@ import json
 import yaml
 from ansible_vault import Vault
 from dotenv import load_dotenv
+from ansible.parsing.vault import VaultLib, AnsibleVaultError
+from ansible.errors import AnsibleError
 
 load_dotenv()
 
@@ -36,7 +38,7 @@ def get_secrets(file_path=None):
     # Charger le fichier YAML
     try:
         with open(file_path, 'r', encoding='utf-8') as f:
-            secrets = yaml.safe_load(f)
+            secrets = f.read() # yaml.safe_load(f) print(secrets)
         return secrets
     except FileNotFoundError:
         raise FileNotFoundError(f"Le fichier spécifié {file_path} n'a pas été trouvé.")
@@ -44,38 +46,55 @@ def get_secrets(file_path=None):
         raise ValueError(f"Erreur de lecture du fichier YAML {file_path}: {e}")
 
 
+import logging
+
 def decrypt_vault_string():
-    """Decrypt vault secrets and format them into an inventory."""
-    hosts_data = get_secrets()
-
-    formatted_data = {}
-    vault = Vault(os.getenv('VAULT_PASSWORD'))
-
-    for host,secret_value in hosts_data.items():
-        host_name = host.split('__')[0].strip()
-        secret_key = host.split('__')[1].strip()
+    """Decrypt vault secrets and format them into a dynamic Ansible inventory."""
+    
+    try:
+        secret_value = get_secrets()
+        if not secret_value:
+            logging.error("Les secrets sont vides ou introuvables.")
+            return None
         
-        if host_name not in formatted_data:
-            formatted_data[host_name] = {}
+        vault_password = os.getenv('VAULT_PASSWORD', '')
+        if not vault_password:
+            logging.error("La variable d'environnement 'VAULT_PASSWORD' est absente.")
+            return None
 
-        try:
-            formatted_data[host_name][secret_key] = vault.load(secret_value)
-        except Exception as e:
-            print(f"Error decrypting vault secret for {host_name}::{secret_key}: {e}", file=sys.stderr)
-            sys.exit(1)
+        vault = Vault(vault_password)
+        decrypted_content = vault.load(secret_value)
 
-    # Structurer l'inventaire
-    inventory = {
-        "all": {
-            "hosts": list(formatted_data.keys()),
-            "vars": {}
-        },
-        "_meta": {
-            "hostvars": formatted_data
-        }
-    }
+        # Vérification de la structure attendue
+        if not isinstance(decrypted_content, dict):
+            logging.error("Le contenu déchiffré n'est pas un dictionnaire valide.")
+            return None
+        
+        inventory = {"_meta": {"hostvars": {}}}
+
+        for group, data in decrypted_content.items():
+            if not isinstance(data, dict) or "hosts" not in data:
+                logging.warning(f"Le groupe {group} ne contient pas de section 'hosts'. Il sera ignoré.")
+                continue
+
+            # Ajout des hôtes et de leurs variables
+            inventory[group] = {
+                "hosts": list(data["hosts"].keys()),
+                "vars": data.get("vars", {})
+            }
+
+            # Ajout des hostvars au niveau global
+            inventory["_meta"]["hostvars"].update(data["hosts"])
+
+    except AnsibleError as e:
+        logging.error(f"Erreur Ansible : {e}")
+        return None
+    except Exception as e:
+        logging.error(f"Erreur inattendue : {e}")
+        return None
 
     return inventory
+
 
 def main():
     """Main entry point for the script."""
