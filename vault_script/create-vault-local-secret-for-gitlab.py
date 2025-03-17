@@ -3,6 +3,7 @@ import argparse
 import yaml
 import os
 import re
+import base64
 
 path=os.path.dirname(os.path.realpath(__file__))
 
@@ -21,8 +22,10 @@ def get_ciphered_inventory(inventory_file):
 
 def generate_local_secret(passwd, inventory_file, secret_dest_file):
     inventory = get_ciphered_inventory(inventory_file)
-    with open(f"{secret_dest_file}", "w", encoding="utf-8") as f:
-        f.write(''.join(encrypt_and_format_vault(inventory, passwd)))
+    with open(f"{secret_dest_file}", "wb") as f:
+        f.write(
+            base64.b64encode(''.join(encrypt_and_format_vault(inventory, passwd)).encode('utf-8'))
+        )
 
 def parse_arguments():
     """Analyse les arguments de la ligne de commande."""
@@ -50,3 +53,6 @@ if __name__ == "__main__":
         secret_dest_file = args.output
     
     generate_local_secret(args.password, inventory_file, secret_dest_file)
+
+
+# faire des test unitaire pour dire que le fichier generer == au system d'ansible vault cli avant transformation en base64

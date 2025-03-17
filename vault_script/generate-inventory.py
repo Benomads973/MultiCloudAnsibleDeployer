@@ -9,6 +9,7 @@ from ansible_vault import Vault
 from dotenv import load_dotenv
 from ansible.parsing.vault import VaultLib, AnsibleVaultError
 from ansible.errors import AnsibleError
+import base64
 
 load_dotenv()
 
@@ -27,8 +28,9 @@ def get_secrets(file_path=None):
     """
     # Vérifier si le chemin du fichier est passé en paramètre, sinon vérifier la variable d'environnement
     if os.getenv('VAULT_HOSTS_SECRETS', None) is not None:
-        secrets = os.getenv('VAULT_HOSTS_SECRETS').replace('\t', '    ').encode('utf-8', 'ignore')
-        return yaml.safe_load(secrets)
+        secrets = os.getenv('VAULT_HOSTS_SECRETS', '')
+        base64.b64decode(secrets)
+        return 
 
     # Si aucun fichier n'est spécifié, utiliser le fichier par défaut
     if not file_path:
@@ -39,6 +41,7 @@ def get_secrets(file_path=None):
     try:
         with open(file_path, 'r', encoding='utf-8') as f:
             secrets = f.read() # yaml.safe_load(f) print(secrets)
+            secrets = base64.b64decode(secrets)
         return secrets
     except FileNotFoundError:
         raise FileNotFoundError(f"Le fichier spécifié {file_path} n'a pas été trouvé.")
