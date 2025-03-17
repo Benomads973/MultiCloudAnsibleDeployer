@@ -29,8 +29,7 @@ def get_secrets(file_path=None):
     # Vérifier si le chemin du fichier est passé en paramètre, sinon vérifier la variable d'environnement
     if os.getenv('VAULT_HOSTS_SECRETS', None) is not None:
         secrets = os.getenv('VAULT_HOSTS_SECRETS', '')
-        base64.b64decode(secrets)
-        return 
+        return base64.b64decode(secrets)
 
     # Si aucun fichier n'est spécifié, utiliser le fichier par défaut
     if not file_path:
