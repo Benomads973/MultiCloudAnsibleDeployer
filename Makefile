@@ -61,6 +61,9 @@ push-%: build-% tag-%-version tag-%-latest
 	@docker push $(DOCKER_REPO)/$(APP_NAME):$(VERSION)-$*
 	@docker push $(DOCKER_REPO)/$(APP_NAME):latest-$*
 
+prod-%:
+	@docker run -it --rm $(DOCKER_REPO)/$(APP_NAME):$(VERSION)-$*
+
 # Génération des règles pour chaque version
 $(foreach version, $(VERSIONS), $(eval $(call RULES,$(version))))
 
